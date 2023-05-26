@@ -4,13 +4,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
 import pinecone
-
 from consts import INDEX_NAME
 
-pinecone.init(
-    api_key=os.environ["PINECONE_API_KEY"],
-    environment=os.environ["PINECONE_ENVIRONMENT_REGION"],
-)
+pinecone.init(api_key=os.environ["PINECONE_API_KEY"], environment=os.environ["PINECONE_ENVIRONMENT_REGION"])
 
 
 def ingest_docs() -> None:
@@ -25,9 +21,7 @@ def ingest_docs() -> None:
 
     for doc in documents:
         old_path = doc.metadata["source"]
-        new_url = old_path.replace(
-            "langchain-docs\\", "https://python.langchain.com/en/latest/"
-        )
+        new_url = old_path.replace("langchain-docs", "https:/")
         doc.metadata.update({"source": new_url})
 
     print(f"Going to insert {len(documents)} to Pinecone")
